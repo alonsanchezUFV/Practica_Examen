@@ -8,6 +8,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -18,10 +19,11 @@ import java.util.Scanner;
 public class App 
 {
     static Scanner Entrada_teclado = new Scanner(System.in);
+    static ArrayList<Coche> Array_coches = new ArrayList<Coche>();
     public static void main( String[] args )
     {
 
-
+    Leer_Fichero();
     Menu();
 
     }
@@ -33,6 +35,7 @@ public class App
         do{
             System.out.println("*******  Elige una  ********");
             System.out.println("1- Añadir una agenda");
+            System.out.println("3- Ver array");
             System.out.println("5- Salir*");
             System.out.println("********");
 
@@ -41,6 +44,19 @@ public class App
                 Menu = Entrada_teclado.nextInt();
                 switch(Menu){
                     case 1:
+                        break;
+                    case 2:
+                        for(int i=0;i<Array_coches.size();i++){
+                            System.out.println("");
+                            System.out.println(Array_coches.get(i).Id);
+                            System.out.println(Array_coches.get(i).Id);
+                            System.out.println(Array_coches.get(i).Id);
+                            System.out.println(Array_coches.get(i).Id);
+                        }
+
+
+                        break;
+                    case 5:
                         break;
                     default:
                         System.out.println("Introduzca el numero de nuevo");
@@ -58,7 +74,13 @@ public class App
         }while(Menu!=5);
     }
     public static void Leer_Fichero(){
-        File file = new File("coches.xml");
+        File file = new File("concesionario.xml");
+
+        String Id;
+        String Marca;
+        String Modelo;
+        int Cilindrada = 0;
+
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -72,13 +94,13 @@ public class App
                 if(nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
 
-                    System.out.println("\nCoche id: " + eElement.getAttribute("id"));
-                    System.out.println("Marca: "
-                            + eElement.getElementsByTagName("marca").item(0).getTextContent());
-                    System.out.println("Modelo: "
-                            + eElement.getElementsByTagName("modelo").item(0).getTextContent());
-                    System.out.println("Cilindrada: "
-                            + eElement.getElementsByTagName("cilindrada").item(0).getTextContent());
+
+                    Id = eElement.getAttribute("id");
+                    Marca = eElement.getElementsByTagName("marca").item(0).getTextContent();
+                    Modelo = eElement.getElementsByTagName("modelo").item(0).getTextContent();
+                    Cilindrada = Integer.parseInt(eElement.getElementsByTagName("cilindrada").item(0).getTextContent());
+                    Coche Coche_aux =new Coche(Id,Marca,Modelo,Cilindrada);
+                    Array_coches.add(Coche_aux);
                 }
             }
 
